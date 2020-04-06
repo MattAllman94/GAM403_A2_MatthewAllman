@@ -5,14 +5,16 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour
 {
 
-    public float speed;
+    public float speed, rotationSpeed;
+    Rigidbody rb;
+    public Vector3 move;
 
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
-   
+
     void Update()
     {
         Movement();
@@ -20,8 +22,37 @@ public class PlayerControls : MonoBehaviour
 
     void Movement()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime);
+        move = transform.forward * Input.GetAxis("Vertical") * speed;
+                   
+        
+        Vector3 rot = Vector3.up * Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+        transform.Rotate(rot);
     }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(move);
+    }
+
+    //void Movement()
+    //{
+    //    if (Input.GetKey(KeyCode.W))
+    //    {
+    //        transform.position += transform.forward * speed * Time.deltaTime;
+    //    }
+    //    else if (Input.GetKey(KeyCode.S))
+    //    {
+    //        transform.position -= transform.forward * speed * Time.deltaTime;
+    //    }
+
+    //    if (Input.GetKey(KeyCode.A))
+    //    {
+    //        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+    //    }
+    //    else if (Input.GetKey(KeyCode.D))
+    //    {
+    //        transform.Rotate(-Vector3.up * rotationSpeed * Time.deltaTime);
+    //    }
+
+    //}
 }

@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: c8b01cffbdf655a4ba85bff4848dd04e
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/DungeonSwarm.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
