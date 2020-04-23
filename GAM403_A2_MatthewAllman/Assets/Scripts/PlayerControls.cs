@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour
 {
 
-    public float speed, rotationSpeed;
+    public float speed, rotationSpeed, brakeSpeed;
     Rigidbody rb;
     public Vector3 move;
 
@@ -32,27 +32,11 @@ public class PlayerControls : MonoBehaviour
     private void FixedUpdate()
     {
         rb.AddForce(move);
+        if(Mathf.Abs(Input.GetAxis("Vertical")) < 0.25f)
+        {
+            rb.velocity = Vector3.MoveTowards(rb.velocity, Vector3.Scale(rb.velocity, Vector3.up), brakeSpeed * Time.deltaTime);
+        }
     }
 
-    //void Movement()
-    //{
-    //    if (Input.GetKey(KeyCode.W))
-    //    {
-    //        transform.position += transform.forward * speed * Time.deltaTime;
-    //    }
-    //    else if (Input.GetKey(KeyCode.S))
-    //    {
-    //        transform.position -= transform.forward * speed * Time.deltaTime;
-    //    }
-
-    //    if (Input.GetKey(KeyCode.A))
-    //    {
-    //        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-    //    }
-    //    else if (Input.GetKey(KeyCode.D))
-    //    {
-    //        transform.Rotate(-Vector3.up * rotationSpeed * Time.deltaTime);
-    //    }
-
-    //}
+  
 }
