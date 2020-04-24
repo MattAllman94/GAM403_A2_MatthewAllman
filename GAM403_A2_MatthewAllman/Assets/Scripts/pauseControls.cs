@@ -21,18 +21,16 @@ public class pauseControls : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.P))
         {
-            print("P pressed");
             if(Time.timeScale == 1)
             {
                 Time.timeScale = 0;
                 showPaused();
-                print("Paused");
             }
             else if (Time.timeScale == 0)
             {
                 Time.timeScale = 1;
                 hidePaused();
-                print("UnPaused");
+                
             }
         }
     }

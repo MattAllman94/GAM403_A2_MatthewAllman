@@ -8,10 +8,10 @@ public class Spawner : MonoBehaviour
     public GameObject enemy;
 
    
-    public void Spawn() //Apply to rts with onclick spawning buildings or units
+    public void Spawn()
     {
         GameObject e = Instantiate(enemy, transform.position, transform.rotation);
-        Destroy(e, 5); //Remove for player kills
+        Destroy(e, 5);
 
     }
 

@@ -6,16 +6,16 @@ public class SpawnControl : MonoBehaviour
 {
 
     public float spawnRate, spawnDelay;
-    public Spawner[] spawns; //dont have to use getcomponent, access immediate script
+    public Spawner[] spawns;
     public int unitCount, minUnits, maxUnits;
 
     void Start()
     {
         
-        spawns = GameObject.FindObjectsOfType<Spawner>(); //allows spawns to be added to the array automatically
+        spawns = GameObject.FindObjectsOfType<Spawner>();
         //InvokeRepeating("SelectSpawn", spawnDelay, spawnRate);
         Invoke("SelectSpawn", spawnRate);
-        //StartCoroutine("SpawnRoutine");
+        
     }
 
 
@@ -42,9 +42,8 @@ public class SpawnControl : MonoBehaviour
     IEnumerator SpawnRoutine()
     {
         int random = Random.Range(0, spawns.Length);
-        print(random);
         spawns[random].Spawn();
-        yield return new WaitForSeconds(spawnRate); //Delay
+        yield return new WaitForSeconds(spawnRate);
         StartCoroutine("SpawnRoutine");
     }
 }

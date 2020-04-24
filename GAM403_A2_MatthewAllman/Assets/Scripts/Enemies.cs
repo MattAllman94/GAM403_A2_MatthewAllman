@@ -25,7 +25,6 @@ public class Enemies : MonoBehaviour
         if(distance >= minDist && distance <= maxDist)
         {
             agent.destination = player.transform.position;
-            print(player.transform.position);
         }
         else
         {

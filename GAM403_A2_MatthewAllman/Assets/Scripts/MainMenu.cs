@@ -9,12 +9,12 @@ public class MainMenu : MonoBehaviour
     public void PlayGame ()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        print("Game Loaded");
+        
     }
 
     public void QuitGame ()
     {
         Application.Quit();
-        print("Game Quit");
+        
     }
 }
