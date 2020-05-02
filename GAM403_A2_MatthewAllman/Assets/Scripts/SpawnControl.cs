@@ -8,6 +8,7 @@ public class SpawnControl : MonoBehaviour
     public float spawnRate, spawnDelay;
     public Spawner[] spawns;
     public int unitCount, minUnits, maxUnits;
+    public static int unitAlive;
 
     void Start()
     {
@@ -35,6 +36,8 @@ public class SpawnControl : MonoBehaviour
         }
 
         Invoke("SelectSpawn", currentRate);
+
+        unitAlive = unitCount;
 
         
     }

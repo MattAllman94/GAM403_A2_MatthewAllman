@@ -6,13 +6,13 @@ public class Spawner : MonoBehaviour
 {
 
     public GameObject enemy;
-
    
+
     public void Spawn()
     {
         GameObject e = Instantiate(enemy, transform.position, transform.rotation);
         Destroy(e, 5);
-
+       
     }
 
 }
