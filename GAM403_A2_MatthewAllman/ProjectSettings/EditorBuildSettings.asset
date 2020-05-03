@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: ca976794bc6a9854d9fe013047d60bd7
+  - enabled: 1
+    path: Assets/Scenes/DungeonSwarm.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
