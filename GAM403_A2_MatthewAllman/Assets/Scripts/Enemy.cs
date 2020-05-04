@@ -10,14 +10,14 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent agent;
     public float minDist, maxDist;
     public SpawnControl currentAmount;
-    public static int unitKilled;
+    
 
     private Transform player;
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        currentAmount = GameObject.Find("SpawnPoints").GetComponent<SpawnControl>();
+        currentAmount = GameObject.Find("SpawnPoints").GetComponent<SpawnControl>(); 
     }
 
 
@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         SpawnControl.currentAmount--;
-        unitKilled++;
-        print("killed: " + unitKilled);
+        SpawnControl.unitKilled++;
     }
 }
