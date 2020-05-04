@@ -7,7 +7,6 @@ public class MainDoorControl : MonoBehaviour
     private Animator animator;
     void Start()
     {
-        //assign animator
         animator = GetComponent<Animator>();
     }
 

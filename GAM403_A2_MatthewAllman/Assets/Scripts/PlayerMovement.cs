@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = (Input.GetAxis("Horizontal") * -Vector3.left * moveAmount) + (Input.GetAxis("Vertical") * Vector3.forward * moveAmount);
         rb.AddForce(movement, ForceMode.Force);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
             rb.AddForce(Vector3.up * jumpSpeed);
         }

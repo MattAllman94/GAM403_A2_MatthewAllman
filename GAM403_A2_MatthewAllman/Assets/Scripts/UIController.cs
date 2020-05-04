@@ -10,8 +10,7 @@ public class UIController : MonoBehaviour
     private float startTime;
     public Text alive, killed;
     public GameObject[] enemyMenu;
-    public static int enemiesAlive, enemiesKilled;
-
+    
 
     void Start()
     {
@@ -31,7 +30,8 @@ public class UIController : MonoBehaviour
 
         timerText.text = minutes + ":" + seconds;
 
-        //alive.text = SpawnControl.unitAlive.ToString();
+        alive.text = SpawnControl.currentAmount.ToString();
+        killed.text = Enemy.unitKilled.ToString();
 
 
         if (Input.GetKey(KeyCode.Tab))
