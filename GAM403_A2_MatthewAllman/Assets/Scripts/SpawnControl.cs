@@ -13,7 +13,6 @@ public class SpawnControl : MonoBehaviour
     private int randomSpawnPoint, enemy;
     void Start()
     {
-        
         currentAmount = 0;
         InvokeRepeating("SpawnEnemy", 0f, 1f);
     }
@@ -22,7 +21,7 @@ public class SpawnControl : MonoBehaviour
     {
         if(currentAmount < maxUnits)
         {
-            if(unitKilled <50)
+            if(unitKilled < 50)
             {
             
                 randomSpawnPoint = Random.Range(0, spawnPoints.Length);

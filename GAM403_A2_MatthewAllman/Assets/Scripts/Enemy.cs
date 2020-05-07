@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent agent;
     public float minDist, maxDist;
     public SpawnControl currentAmount;
+    public static int health = 10;
     
 
     private Transform player;
@@ -31,6 +32,20 @@ public class Enemy : MonoBehaviour
         else
         {
             agent.ResetPath();
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        health = amount;
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+            print("Enemy has died");
+        }
+        else
+        {
+            print("Enemy took damage");
         }
     }
 

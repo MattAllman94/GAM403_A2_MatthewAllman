@@ -6,39 +6,69 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public float speed, rotationSpeed, brakeSpeed, jumpSpeed;
-    public GameObject hitBox, swingHitBox, sword, bow;
+    public GameObject hitBox, swingHitBox, bow, sword;
+    public static int health, ammunition;
 
     private Vector3 move;
-    private bool charging = false, swordActive, bowActive, grounded = false;
-    private float maxCharge, currentCharge, moveAmount;
+    private bool swordActive, bowActive, attack = false, chargedAttack = false, charging = false, grounded = false;
+    private float moveAmount;
+    private int attackDamage = 10, chargedAttackDamage = 20;
 
     Rigidbody rb;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        
         hitBox.SetActive(false);
         swingHitBox.SetActive(false);
         sword.SetActive(true);
         swordActive = true;
         bow.SetActive(false);
         bowActive = false;
+        
+
+        health = 100;
+        ammunition = 20;
     }
 
-    
+
     void Update()
     {
         Movement();
         Attack();
+        
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                sword.SetActive(true);
+                swordActive = true;
+                bow.SetActive(false);
+                bowActive = false;
+
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                sword.SetActive(false);
+                swordActive = false;
+                bow.SetActive(true);
+                bowActive = true;
+
+            }
+
+        if (health <= 0)
+        {
+            GameObject.FindObjectOfType<UIController>().GameOver();
+        }
     }
 
     private void FixedUpdate()
     {
         rb.AddForce(move);
-        if(Mathf.Abs(Input.GetAxis("Vertical")) < 0.25f)
+        if (Mathf.Abs(Input.GetAxis("Vertical")) < 0.25f)
         {
             rb.velocity = Vector3.MoveTowards(rb.velocity, Vector3.Scale(rb.velocity, Vector3.up), brakeSpeed * Time.deltaTime);
         }
     }
+
 
     void Movement()
     {
@@ -51,9 +81,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = (Input.GetAxis("Horizontal") * -Vector3.left * moveAmount) + (Input.GetAxis("Vertical") * Vector3.forward * moveAmount);
         rb.AddForce(movement, ForceMode.Force);
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpSpeed);
+
         }
     }
 
@@ -65,11 +96,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        if (gameObject.CompareTag("enemy"))
+        {
+            if(attack == true)
+            {
+                Enemy.health = Enemy.health - attackDamage;
+                print("Enemy took Damage");
+            }
+            else if(chargedAttack == true)
+            {
+                Enemy.health = Enemy.health - chargedAttackDamage;
+            }
+            
+        }
+
+    }
+
     public void Attack()
     {
 
-        maxCharge = 10;
-        currentCharge = 1;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -77,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             swordActive = true;
             bow.SetActive(false);
             bowActive = false;
-            print("Sword Equipped");
+
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -85,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
             swordActive = false;
             bow.SetActive(true);
             bowActive = true;
-            print("Bow Equipped");
+
         }
 
         if (swordActive == true)
@@ -93,35 +140,32 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 hitBox.SetActive(true);
+                attack = true;
+                
                 print("Stab");
             }
             else
             {
                 hitBox.SetActive(false);
+                attack = false;
             }
 
             if (Input.GetMouseButton(1))
             {
                 charging = true;
-                currentCharge = +currentCharge;
-                if (currentCharge < maxCharge)
-                {
-                    print("charging " + currentCharge);
-                }
-                else if (currentCharge == maxCharge)
-                {
-                    print("Full Charged");
-                }
+                print("charging ");
             }
             else if (charging = true && Input.GetMouseButtonUp(1))
             {
                 swingHitBox.SetActive(true);
+                chargedAttack = true;
                 print("Charge attack swung");
             }
             else
             {
                 charging = false;
                 swingHitBox.SetActive(false);
+                chargedAttack = false;
             }
         }
         else if (bowActive == true)
@@ -129,28 +173,28 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 print("Fire Arrow");
+                attack = true;
+            }
+            else
+            {
+                attack = false;
             }
 
             if (Input.GetMouseButton(1))
             {
                 charging = true;
-                currentCharge = +currentCharge;
-                if (currentCharge < maxCharge)
-                {
-                    print("charging " + currentCharge);
-                }
-                else if (currentCharge == maxCharge)
-                {
-                    print("Full Charged");
-                }
+                print("charging ");
+
             }
             else if (charging = true && Input.GetMouseButtonUp(1))
             {
+                chargedAttack = true;
                 print("Charged Shot Fired");
             }
             else
             {
                 charging = false;
+                chargedAttack = false;
             }
         }
 
