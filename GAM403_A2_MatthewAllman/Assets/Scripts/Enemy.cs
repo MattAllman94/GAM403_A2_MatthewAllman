@@ -6,23 +6,29 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
 
-    public float speed;
+    public float speed, attackRate;
     public NavMeshAgent agent;
     public float minDist, maxDist;
     public SpawnControl currentAmount;
-    public static int health = 10;
-    
+    public int eHealth = 10;
+    public bool hit = false;
 
+    private float nextAttack;
+    private bool attacking = false;
     private Transform player;
+
+    Rigidbody rb;
+
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        currentAmount = GameObject.Find("SpawnPoints").GetComponent<SpawnControl>(); 
+        currentAmount = GameObject.Find("SpawnPoints").GetComponent<SpawnControl>();
+        rb = GetComponent<Rigidbody>();
     }
 
 
-    void Update()
+    void Update() //Targets the player and moves towards them using NavMesh
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
         if(distance  > minDist && distance < maxDist)
@@ -33,23 +39,43 @@ public class Enemy : MonoBehaviour
         {
             agent.ResetPath();
         }
-    }
 
-    public void TakeDamage(int amount)
-    {
-        health = amount;
-        if(health <= 0)
+        if(hit == true)
+        {
+          
+            rb.AddForce(transform.forward * -30f, ForceMode.Impulse);
+            
+            hit = false;
+        }
+        
+        if (eHealth <= 0) // Kills the Enemy when their health is 0
         {
             Destroy(gameObject);
-            print("Enemy has died");
+            
         }
-        else
+        
+        
+        
+    }
+
+    public void OnTriggerStay(Collider other) // Attacks the player
+    {
+        if(other.CompareTag("Player"))
         {
-            print("Enemy took damage");
+            PlayerMovement health = other.GetComponent<PlayerMovement>();
+            if (Time.time > nextAttack)
+            {
+                health.pHealth = health.pHealth - 10;
+                nextAttack = Time.time + attackRate;
+                rb.AddForce(transform.forward * -5f, ForceMode.Impulse);
+            }
+           
+
         }
     }
 
-    private void OnDestroy()
+
+    private void OnDestroy() //Affects the total amount of enemies alive or killed for the final score and UI display
     {
         SpawnControl.currentAmount--;
         SpawnControl.unitKilled++;

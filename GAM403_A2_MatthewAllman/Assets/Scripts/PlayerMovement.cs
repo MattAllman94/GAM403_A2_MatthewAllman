@@ -1,18 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
 
-    public float speed, rotationSpeed, brakeSpeed, jumpSpeed;
-    public GameObject hitBox, swingHitBox, bow, sword;
-    public static int health, ammunition;
+    public float speed, defaultSpeed, rotationSpeed, brakeSpeed, jumpSpeed, range;
+    public GameObject hitBox, swingHitBox, bow, sword, marker;
+    public int pHealth;
+    public static int ammunition;
+    public Text healthText;
+    
 
     private Vector3 move;
     private bool swordActive, bowActive, attack = false, chargedAttack = false, charging = false, grounded = false;
     private float moveAmount;
-    private int attackDamage = 10, chargedAttackDamage = 20;
+    private int attackDamage = 1, chargedAttackDamage = 20;
+    
 
     Rigidbody rb;
     void Start()
@@ -25,9 +30,9 @@ public class PlayerMovement : MonoBehaviour
         swordActive = true;
         bow.SetActive(false);
         bowActive = false;
-        
 
-        health = 100;
+        
+        
         ammunition = 20;
     }
 
@@ -37,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         Attack();
         
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1)) //Sets sword when 1 is pressed
             {
                 sword.SetActive(true);
                 swordActive = true;
@@ -45,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
                 bowActive = false;
 
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) //Sets bow when 2 is pressed
             {
                 sword.SetActive(false);
                 swordActive = false;
@@ -54,13 +59,16 @@ public class PlayerMovement : MonoBehaviour
 
             }
 
-        if (health <= 0)
+        if (pHealth <= 0) //Player dies = Game Over
         {
             GameObject.FindObjectOfType<UIController>().GameOver();
         }
+
+        
+        healthText.text = pHealth.ToString();  //Displays the current health of the player
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //Applies Force for Movement
     {
         rb.AddForce(move);
         if (Mathf.Abs(Input.GetAxis("Vertical")) < 0.25f)
@@ -70,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    void Movement()
+    void Movement() //Controls all the player's movement
     {
         move = transform.forward * Input.GetAxis("Vertical") * speed;
 
@@ -78,71 +86,123 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(rot);
 
         moveAmount = speed * Time.deltaTime;
-        Vector3 movement = (Input.GetAxis("Horizontal") * -Vector3.left * moveAmount) + (Input.GetAxis("Vertical") * Vector3.forward * moveAmount);
-        rb.AddForce(movement, ForceMode.Force);
+        Vector3 movement = (Input.GetAxis("Vertical") * transform.forward * moveAmount);
+        //rb.AddForce(movement, ForceMode.Force);
+        rb.MovePosition(transform.position + movement);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && grounded) // Jumps when space is pressed
         {
-            rb.AddForce(Vector3.up * jumpSpeed);
-
+            
+            rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+            grounded = false;
         }
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Floor"))
         {
             grounded = true;
         }
+        
     }
 
-    public void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (gameObject.CompareTag("enemy"))
+        if (collision.gameObject.CompareTag("Floor"))
         {
-            if(attack == true)
+            grounded = true;
+        }
+
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            grounded = false;
+        }
+
+    }
+
+    public void OnTriggerStay(Collider other) //Damages the enemy
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            Enemy enemy = other.GetComponent<Enemy>();
+            print("hit " + other.gameObject.name);
+            if(enemy != null)
             {
-                Enemy.health = Enemy.health - attackDamage;
-                print("Enemy took Damage");
+                if (attack == true)
+                {
+                    enemy.eHealth = enemy.eHealth - attackDamage;
+                    enemy.hit = true;
+
+
+                }
+                else if (chargedAttack == true)
+                {
+                    enemy.eHealth = enemy.eHealth - chargedAttackDamage;
+                    enemy.hit = true;
+                }
+                else
+                {
+                    enemy.hit = false;
+                }
             }
-            else if(chargedAttack == true)
-            {
-                Enemy.health = Enemy.health - chargedAttackDamage;
-            }
+            
             
         }
 
+        if(other.CompareTag("hPickup")) // Determines the pickup of a health item
+        {
+            other.gameObject.SetActive(false);
+            if(pHealth < 80)
+            {
+                pHealth = Mathf.Clamp(pHealth +20, 0, 100);
+            }
+            
+                
+        }
+
+        if(other.CompareTag("aPickup")) //Determines the pickup of ammunition
+        {
+            other.gameObject.SetActive(false);
+            if (ammunition < 90)
+            {
+                ammunition = ammunition + 10;
+            }
+            else
+            {
+                ammunition = 100;
+            }
+        }
+
+        if(other.CompareTag("sPickup")) // Determines the pickup of Temporary speed
+        {
+            other.gameObject.SetActive(false);
+            StartCoroutine("SpeedBoost");
+        }
+    
     }
 
-    public void Attack()
+    IEnumerator SpeedBoost()
+    {
+        speed = defaultSpeed * 2;
+        yield return new WaitForSeconds(5);
+        speed = defaultSpeed;
+    }
+
+    public void Attack() //Basic Attack Sequences
     {
 
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            sword.SetActive(true);
-            swordActive = true;
-            bow.SetActive(false);
-            bowActive = false;
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            sword.SetActive(false);
-            swordActive = false;
-            bow.SetActive(true);
-            bowActive = true;
-
-        }
-
-        if (swordActive == true)
+        if (swordActive == true) // Controls Sword Attacks
         {
             if (Input.GetMouseButtonDown(0))
             {
                 hitBox.SetActive(true);
                 attack = true;
-                
-                print("Stab");
+                                
             }
             else
             {
@@ -153,13 +213,13 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButton(1))
             {
                 charging = true;
-                print("charging ");
+                
             }
             else if (charging = true && Input.GetMouseButtonUp(1))
             {
                 swingHitBox.SetActive(true);
                 chargedAttack = true;
-                print("Charge attack swung");
+                
             }
             else
             {
@@ -168,34 +228,46 @@ public class PlayerMovement : MonoBehaviour
                 chargedAttack = false;
             }
         }
-        else if (bowActive == true)
+        else if (bowActive == true && ammunition > 0) // Controls Bow Attacks
         {
-            if (Input.GetMouseButtonDown(0))
+
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Shoots a raycast at the mouse position
+            if (Physics.Raycast(ray, out hit, range))
             {
-                print("Fire Arrow");
-                attack = true;
-            }
-            else
-            {
-                attack = false;
+                marker.transform.position = hit.point;
+                if (Input.GetMouseButtonDown(0) && hit.collider.tag == "Enemy")
+                {
+                    print("Fire Arrow, hit: " + hit.transform.name);
+                    attack = true;
+
+                }
+                else
+                {
+                    attack = false;
+                }
+
+                if (Input.GetMouseButton(1))
+                {
+                    charging = true;
+                    print("charging ");
+
+                }
+                else if (charging = true && Input.GetMouseButtonUp(1))
+                {
+                    chargedAttack = true;
+                    print("Charged Shot Fired");
+                }
+                else
+                {
+                    charging = false;
+                    chargedAttack = false;
+                }
+                
+                
             }
 
-            if (Input.GetMouseButton(1))
-            {
-                charging = true;
-                print("charging ");
-
-            }
-            else if (charging = true && Input.GetMouseButtonUp(1))
-            {
-                chargedAttack = true;
-                print("Charged Shot Fired");
-            }
-            else
-            {
-                charging = false;
-                chargedAttack = false;
-            }
+            
         }
 
     }

@@ -7,11 +7,12 @@ using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
 
-    public Text timerText, healthText, ammunitionText;
+    public Text timerText, ammunitionText;
     public Text alive, killed;
     public Text score;
     public GameObject enemyMenu;
     public GameObject pauseMenuUI, loseMenu;
+    
     
     public static bool gameIsPaused = false;
     
@@ -22,7 +23,7 @@ public class UIController : MonoBehaviour
     {
         startTime = Time.time;
         hideMenu();
-
+        
     }
 
 
@@ -34,18 +35,18 @@ public class UIController : MonoBehaviour
         string seconds = (t % 60).ToString("f0");
 
         timerText.text =seconds;
-        healthText.text = PlayerMovement.health.ToString();
-        ammunitionText.text = PlayerMovement.ammunition.ToString();
+        
+        ammunitionText.text = PlayerMovement.ammunition.ToString(); // Displays the ammunition
 
 
-        alive.text = SpawnControl.currentAmount.ToString();
-        killed.text = SpawnControl.unitKilled.ToString();
-        score.text = killed.text + timerText.text;
+        alive.text = SpawnControl.currentAmount.ToString(); //Displays the amount of enemies alive
+        killed.text = SpawnControl.unitKilled.ToString(); // displays the amount of enemies killed
+        score.text = killed.text + timerText.text; // Displays the final score in the Game Over Screen
 
        
 
 
-        if (Input.GetKey(KeyCode.Tab))
+        if (Input.GetKey(KeyCode.Tab)) //Enemy Menu when Tab is held
         {
             showMenu();
         }
@@ -54,7 +55,7 @@ public class UIController : MonoBehaviour
             hideMenu();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)) // Pauses the Game when ESC is pressed
         {
             if (gameIsPaused)
             {
@@ -78,7 +79,7 @@ public class UIController : MonoBehaviour
         enemyMenu.SetActive(false);
     }
 
-    public void Resume()
+    public void Resume() // Resumes the Game (Pause menu is toggled off)
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -86,7 +87,7 @@ public class UIController : MonoBehaviour
 
     }
 
-    void Pause()
+    void Pause() //Pauses the game
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
@@ -94,26 +95,26 @@ public class UIController : MonoBehaviour
 
     }
 
-    public void Restart()
+    public void Restart() //Restarts the game
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f;
     }
 
-    public void LoadMenu()
+    public void LoadMenu() //Goes back to the main menu
     {
 
         SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1f;
     }
 
-    public void QuitGame()
+    public void QuitGame() //Quits the game
     {
 
         Application.Quit();
     }
 
-    public void GameOver()
+    public void GameOver() //Displays the Game Over Screen
     {
         loseMenu.SetActive(true);
         Time.timeScale = 0f;

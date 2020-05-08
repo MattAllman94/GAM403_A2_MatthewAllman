@@ -21,7 +21,7 @@ public class SpawnControl : MonoBehaviour
     {
         if(currentAmount < maxUnits)
         {
-            if(unitKilled < 50)
+            if(Time.time < 5) //Spawns Level 1 Enemies
             {
             
                 randomSpawnPoint = Random.Range(0, spawnPoints.Length);
@@ -32,7 +32,7 @@ public class SpawnControl : MonoBehaviour
                 
         
             }
-            else if(unitKilled > 50 && unitKilled < 100)
+            else if(Time.time >= 5 && Time.time < 10) //Spawns Level 2 Enemies
             {
                 randomSpawnPoint = Random.Range(0, spawnPoints.Length);
                 enemy = Random.Range(0, goblin.Length);
@@ -40,7 +40,7 @@ public class SpawnControl : MonoBehaviour
                 currentAmount++;
                 Destroy(e, 20);
             }
-            else if(unitKilled > 100 && unitKilled < 150)
+            else if(unitKilled > 100 && unitKilled < 150) //Spawns Level 3 Enemies
             {
                 randomSpawnPoint = Random.Range(0, spawnPoints.Length);
                 enemy = Random.Range(0, skeletonKnight.Length);
@@ -49,7 +49,7 @@ public class SpawnControl : MonoBehaviour
                 Destroy(e, 20);
                 
             }
-            else if(unitKilled > 150 && unitKilled < 200)
+            else if(unitKilled > 150 && unitKilled < 200) //Spawns Level 4 Enemies
             {
                 randomSpawnPoint = Random.Range(0, spawnPoints.Length);
                 enemy = Random.Range(0, golem.Length);
@@ -59,7 +59,7 @@ public class SpawnControl : MonoBehaviour
                 Destroy(e, 20);
                 
             }
-            else if(unitKilled > 200)
+            else if(unitKilled > 200) //Spawns All Enemies at random
             {
                 randomSpawnPoint = Random.Range(0, spawnPoints.Length);
                 enemy = Random.Range(0, finalWaves.Length);

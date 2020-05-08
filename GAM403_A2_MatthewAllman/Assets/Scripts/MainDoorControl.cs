@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainDoorControl : MonoBehaviour
 {
     private Animator animator;
-    public GameObject player;
+    
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -13,9 +13,11 @@ public class MainDoorControl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (player)
+        
+        if (other.CompareTag("Player"))
         {
-            animator.SetTrigger("doorClose"); 
+            animator.SetTrigger("Close"); 
         }
+        
     }
 }
