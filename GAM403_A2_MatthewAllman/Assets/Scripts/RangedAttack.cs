@@ -5,7 +5,7 @@ using UnityEngine;
 public class RangedAttack : MonoBehaviour
 {
     public float fireRate = 0.25f, weaponRange = 50f, hitForce = 100f;
-    public GameObject marker, arrow;
+    public GameObject marker;
 
     private float nextFire;
     private Animator animator;
@@ -26,7 +26,6 @@ public class RangedAttack : MonoBehaviour
             
             Ray ray = new Ray(transform.position, transform.right); // The origin of the raycast is set from the player
             RaycastHit hit; //Stores the info as hit
-            arrow.SetActive(true);
             animator.SetTrigger("Fire");
             
             if (Physics.Raycast(ray, out hit, weaponRange)) // Stores any data within hit as the ray shoots forward in the direction the player is moving.

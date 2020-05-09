@@ -19187,12 +19187,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 418098133}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &419300925 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6532021041468210935, guid: af1553ee6ff0ca4479327f2cfd56a8b2,
-    type: 3}
-  m_PrefabInstance: {fileID: 618258551}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &420804907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32116,7 +32110,7 @@ PrefabInstance:
     - target: {fileID: 6532021041467908505, guid: af1553ee6ff0ca4479327f2cfd56a8b2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.03
+      value: 0.59
       objectReference: {fileID: 0}
     - target: {fileID: 6532021041467908505, guid: af1553ee6ff0ca4479327f2cfd56a8b2,
         type: 3}
@@ -83670,7 +83664,7 @@ PrefabInstance:
     - target: {fileID: 3830202015610685198, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5886953982895327392, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
@@ -83730,52 +83724,52 @@ PrefabInstance:
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.013011023
+      value: 0.23856938
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0077838143
+      value: -0.0067749717
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.70452166
+      value: -0.01420349
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7095205
+      value: 0.9709979
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.37
+      value: 0.88
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.41
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.74
+      value: 0.86
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -89.601006
+      value: -1.9930001
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 1.687
+      value: 27.588001
       objectReference: {fileID: 0}
     - target: {fileID: 6799741287916934486, guid: afcd00c856e3a27498eae286a4ed3d5f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -0.418
+      value: -1.289
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4176043734508643129, guid: afcd00c856e3a27498eae286a4ed3d5f, type: 3}
@@ -98239,7 +98233,25 @@ MonoBehaviour:
   weaponRange: 50
   hitForce: 100
   marker: {fileID: 1825537500}
-  arrow: {fileID: 419300925}
+--- !u!95 &1899302827
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899302822}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cbe43bd9218e352409ca1b490278b358, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1900100095
 PrefabInstance:
   m_ObjectHideFlags: 0
