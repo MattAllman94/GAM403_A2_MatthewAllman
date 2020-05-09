@@ -11,7 +11,7 @@ public class MainDoorControl : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) // closes the door as the player exits the start point
     {
         
         if (other.CompareTag("Player"))

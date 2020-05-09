@@ -7,16 +7,17 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public float speed, defaultSpeed, rotationSpeed, brakeSpeed, jumpSpeed, range;
-    public GameObject hitBox, swingHitBox, bow, sword, marker;
+    public GameObject hitBox, swingHitBox, bow, sword;
     public int pHealth;
-    public static int ammunition;
+    public int ammunition;
     public Text healthText;
+    public  int meleeAttackDmg, meleeChargeDmg, rangedAttackDmg, rangedChargeDmg;
+    public bool swordActive, bowActive, attack = false, chargedAttack = false, charging = false, grounded = false;
     
-
     private Vector3 move;
-    private bool swordActive, bowActive, attack = false, chargedAttack = false, charging = false, grounded = false;
     private float moveAmount;
-    private int attackDamage = 1, chargedAttackDamage = 20;
+    private Animator animator;
+   
     
 
     Rigidbody rb;
@@ -30,9 +31,10 @@ public class PlayerMovement : MonoBehaviour
         swordActive = true;
         bow.SetActive(false);
         bowActive = false;
+        
 
-        
-        
+        animator = GetComponent<Animator>();
+
         ammunition = 20;
     }
 
@@ -98,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionStay(Collision collision) //Checks that the player has landed before being able to jump again
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
@@ -116,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnCollisionExit(Collision collision) // Stops double jump
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
@@ -127,22 +129,22 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnTriggerStay(Collider other) //Damages the enemy
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy")) // Controls damage over the enemies
         {
             Enemy enemy = other.GetComponent<Enemy>();
-            print("hit " + other.gameObject.name);
+            
             if(enemy != null)
             {
                 if (attack == true)
                 {
-                    enemy.eHealth = enemy.eHealth - attackDamage;
+                    enemy.eHealth = enemy.eHealth - meleeAttackDmg;
                     enemy.hit = true;
 
 
                 }
                 else if (chargedAttack == true)
                 {
-                    enemy.eHealth = enemy.eHealth - chargedAttackDamage;
+                    enemy.eHealth = enemy.eHealth - meleeChargeDmg;
                     enemy.hit = true;
                 }
                 else
@@ -154,10 +156,37 @@ public class PlayerMovement : MonoBehaviour
             
         }
 
-        if(other.CompareTag("hPickup")) // Determines the pickup of a health item
+        if (other.CompareTag("Boss"))  // Controls damage over the boss
+        {
+            Boss enemy = other.GetComponent<Boss>();
+            
+            if (enemy != null)
+            {
+                if (attack == true)
+                {
+                    enemy.eHealth = enemy.eHealth - meleeAttackDmg;
+                    enemy.hit = true;
+
+
+                }
+                else if (chargedAttack == true)
+                {
+                    enemy.eHealth = enemy.eHealth - meleeChargeDmg;
+                    enemy.hit = true;
+                }
+                else
+                {
+                    enemy.hit = false;
+                }
+            }
+
+
+        }
+
+        if (other.CompareTag("hPickup")) // Determines the pickup of a health item
         {
             other.gameObject.SetActive(false);
-            if(pHealth < 80)
+            if(pHealth < 100)
             {
                 pHealth = Mathf.Clamp(pHealth +20, 0, 100);
             }
@@ -168,14 +197,11 @@ public class PlayerMovement : MonoBehaviour
         if(other.CompareTag("aPickup")) //Determines the pickup of ammunition
         {
             other.gameObject.SetActive(false);
-            if (ammunition < 90)
+            if (ammunition < 100)
             {
-                ammunition = ammunition + 10;
+                ammunition = Mathf.Clamp(ammunition + 10, 0, 100);
             }
-            else
-            {
-                ammunition = 100;
-            }
+           
         }
 
         if(other.CompareTag("sPickup")) // Determines the pickup of Temporary speed
@@ -202,7 +228,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 hitBox.SetActive(true);
                 attack = true;
-                                
+                animator.SetTrigger("Attack"); //Attack animation
+
             }
             else
             {
@@ -219,7 +246,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 swingHitBox.SetActive(true);
                 chargedAttack = true;
-                
+                animator.SetTrigger("Charged Attack"); // swing animation
+
             }
             else
             {
@@ -235,33 +263,40 @@ public class PlayerMovement : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Shoots a raycast at the mouse position
             if (Physics.Raycast(ray, out hit, range))
             {
-                marker.transform.position = hit.point;
+                
+                Enemy enemy = GetComponent<Enemy>();
                 if (Input.GetMouseButtonDown(0) && hit.collider.tag == "Enemy")
                 {
                     print("Fire Arrow, hit: " + hit.transform.name);
                     attack = true;
-
+                    enemy.eHealth = enemy.eHealth - rangedAttackDmg;
+                    ammunition--;
+                    
                 }
                 else
                 {
                     attack = false;
+                    
                 }
 
                 if (Input.GetMouseButton(1))
                 {
                     charging = true;
-                    print("charging ");
+                    
 
                 }
-                else if (charging = true && Input.GetMouseButtonUp(1))
+                else if (charging = true && Input.GetMouseButtonUp(1) && hit.collider.tag == "Enemy")
                 {
-                    chargedAttack = true;
-                    print("Charged Shot Fired");
+                    enemy.eHealth = enemy.eHealth - rangedChargeDmg;
+                    
+                    ammunition--;
+
                 }
                 else
                 {
                     charging = false;
-                    chargedAttack = false;
+                    
+
                 }
                 
                 

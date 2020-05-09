@@ -179,7 +179,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 4
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 15
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6372517141377796268
 MonoBehaviour:
@@ -193,13 +193,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61b5e74094e86de45bded6b770c91fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  attackRate: 2
+  speed: 2
+  attackRate: 3
   agent: {fileID: 3516944546078258893}
   minDist: 1
   maxDist: 50
   currentAmount: {fileID: 0}
-  health: 10
+  eHealth: 20
+  attackDmg: 20
+  hit: 0
 --- !u!1001 &3582853623758730461
 PrefabInstance:
   m_ObjectHideFlags: 0

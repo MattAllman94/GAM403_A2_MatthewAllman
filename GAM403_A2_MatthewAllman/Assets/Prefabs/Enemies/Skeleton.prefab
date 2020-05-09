@@ -179,7 +179,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 4
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 15
   m_ObstacleAvoidanceType: 4
 --- !u!114 &8075496031617549186
 MonoBehaviour:
@@ -197,9 +197,11 @@ MonoBehaviour:
   attackRate: 2
   agent: {fileID: 2215250253079234272}
   minDist: 1
-  maxDist: 50
+  maxDist: 200
   currentAmount: {fileID: 0}
-  health: 10
+  eHealth: 10
+  attackDmg: 10
+  hit: 0
 --- !u!1001 &8685089836457856910
 PrefabInstance:
   m_ObjectHideFlags: 0

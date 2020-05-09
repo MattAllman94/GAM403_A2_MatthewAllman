@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Boss : MonoBehaviour
 {
 
     public float speed, attackRate;
@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour
     public int eHealth, attackDmg;
     public bool hit = false;
     
+    
 
     private float nextAttack;
     private Transform player;
+    private Animator animator;
 
     Rigidbody rb;
 
@@ -25,6 +27,7 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         currentAmount = GameObject.Find("SpawnPoints").GetComponent<SpawnControl>();
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
 
@@ -43,15 +46,17 @@ public class Enemy : MonoBehaviour
         if(hit == true)
         {
           
-            rb.AddForce(transform.forward * -30f, ForceMode.Impulse);
+            rb.AddForce(transform.forward * -10f, ForceMode.Impulse);
             
             hit = false;
         }
         
-        if (eHealth <= 0) // Kills the Enemy when their health is 0
+        if (eHealth <= 0) // Kills the Boss when their health is 0
         {
-            Destroy(gameObject);
-            
+
+            gameObject.SetActive(false);
+            GameObject.FindObjectOfType<UIController>().Win();
+
         }
         
         
@@ -68,6 +73,7 @@ public class Enemy : MonoBehaviour
                 health.pHealth = health.pHealth - attackDmg;
                 nextAttack = Time.time + attackRate;
                 rb.AddForce(transform.forward * -5f, ForceMode.Impulse);
+                animator.SetTrigger("Attack");
             }
            
 
@@ -75,9 +81,4 @@ public class Enemy : MonoBehaviour
     }
 
 
-    private void OnDestroy() //Affects the total amount of enemies alive or killed for the final score and UI display
-    {
-        SpawnControl.currentAmount--;
-        SpawnControl.unitKilled++;
-    }
 }
