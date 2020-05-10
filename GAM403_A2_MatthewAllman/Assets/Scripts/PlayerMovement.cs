@@ -10,12 +10,14 @@ public class PlayerMovement : MonoBehaviour
     public GameObject hitBox, swingHitBox, bow, sword;
     public int pHealth;
     public int ammunition;
-    public Text healthText;
+    public Text healthText, ammunitionText;
     public  int meleeAttackDmg, meleeChargeDmg, rangedAttackDmg, rangedChargeDmg;
     public bool swordActive, bowActive, attack = false, chargedAttack = false, charging = false, grounded = false;
-    
+    public float fireRate = 0.25f, weaponRange = 50f, hitForce = 100f;
+    public GameObject marker;
+
     private Vector3 move;
-    private float moveAmount;
+    private float moveAmount, nextFire;
     private Animator animator;
    
     
@@ -68,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
         
         healthText.text = pHealth.ToString();  //Displays the current health of the player
+        ammunitionText.text = ammunition.ToString(); // Displays the ammunition
     }
 
     private void FixedUpdate() //Applies Force for Movement
@@ -259,50 +262,65 @@ public class PlayerMovement : MonoBehaviour
         else if (bowActive == true && ammunition > 0) // Controls Bow Attacks
         {
 
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Shoots a raycast at the mouse position
-            if (Physics.Raycast(ray, out hit, range))
+            if (Input.GetMouseButtonDown(0) && Time.time > nextFire) //when the mouse button is pressed and the time is greater than the time from nextFire variable
             {
-                
-                Enemy enemy = GetComponent<Enemy>();
-                if (Input.GetMouseButtonDown(0) && hit.collider.tag == "Enemy")
-                {
-                    print("Fire Arrow, hit: " + hit.transform.name);
-                    attack = true;
-                    enemy.eHealth = enemy.eHealth - rangedAttackDmg;
-                    ammunition--;
-                    
-                }
-                else
-                {
-                    attack = false;
-                    
-                }
+                nextFire = Time.time + fireRate; //Sets the delay for the next attack
 
-                if (Input.GetMouseButton(1))
-                {
-                    charging = true;
-                    
+                Ray ray = new Ray(transform.position, transform.forward); // The origin of the raycast is set from the player
+                RaycastHit hit; //Stores the info as hit
+                animator.SetTrigger("Fire");
 
-                }
-                else if (charging = true && Input.GetMouseButtonUp(1) && hit.collider.tag == "Enemy")
+                if (Physics.Raycast(ray, out hit, weaponRange)) // Stores any data within hit as the ray shoots forward in the direction the player is moving.
                 {
-                    enemy.eHealth = enemy.eHealth - rangedChargeDmg;
-                    
-                    ammunition--;
-
+                    marker.transform.position = hit.point; //Uses a marker on screen to see where the raycast is hitting
+                    if (hit.collider.CompareTag("Enemy")) // If the raycast hits an object tagged as Enemy
+                    {
+                        Enemy enemyHealth = GameObject.Find("Enemy").GetComponent<Enemy>(); // Access the enemy's script to change their health
+                        enemyHealth.eHealth = enemyHealth.eHealth - rangedAttackDmg; //Deals Damage
+                        enemyHealth.hit = true; //Creates Rebound
+                        ammunition--; // uses one arrow from ammunition
+                        print("Arrow fired at " + hit.collider.name);
+                    }
+                    else if (hit.collider.CompareTag("Boss"))
+                    {
+                        Boss bossHealth = GameObject.Find("Boss").GetComponent<Boss>();  //Access the boss' script to change its health
+                        bossHealth.eHealth = bossHealth.eHealth - rangedAttackDmg;
+                        bossHealth.hit = true;
+                        ammunition--;
+                    }
                 }
-                else
-                {
-                    charging = false;
-                    
-
-                }
-                
-                
             }
 
-            
+            if (Input.GetMouseButtonDown(1) && Time.time > nextFire) //Charge Range Attack (Same as above)
+            {
+                nextFire = Time.time + fireRate;
+
+                Ray ray = new Ray(transform.position, transform.forward);
+                RaycastHit hit;
+                animator.SetTrigger("Fire");
+
+                if (Physics.Raycast(ray, out hit, weaponRange))
+                {
+                    marker.transform.position = hit.point;
+                    if (hit.collider.CompareTag("Enemy"))
+                    {
+                        Enemy enemyHealth = GameObject.Find("Enemy").GetComponent<Enemy>();
+                        enemyHealth.eHealth = enemyHealth.eHealth - rangedChargeDmg;
+                        enemyHealth.hit = true;
+                        ammunition--;
+                        print("Arrow fired at " + hit.collider.name);
+                    }
+                    else if (hit.collider.CompareTag("Boss"))
+                    {
+                        Boss bossHealth = GameObject.Find("Boss").GetComponent<Boss>();
+                        bossHealth.eHealth = bossHealth.eHealth - rangedChargeDmg;
+                        bossHealth.hit = true;
+                        ammunition--;
+                    }
+                }
+            }
+
+
         }
 
     }

@@ -19,7 +19,7 @@ public class BossDoorControl : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time >= 10 && !doorClosed)
+        if (Time.time >= 900 && !doorClosed)
         {
             animator.SetTrigger("Open");
             

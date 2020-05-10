@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
 
-    public Text timerText, ammunitionText;
+    public Text timerText;
     public Text alive, killed;
     public Text score, winScore;
     public GameObject enemyMenu;
@@ -32,7 +32,7 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        PlayerMovement player = GameObject.Find("Player").GetComponent<PlayerMovement>();
+       
 
         float t = Time.time - startTime;
 
@@ -41,7 +41,7 @@ public class UIController : MonoBehaviour
 
         timerText.text = minutes + ":" + seconds; // Displays the time in minutes and seconds
         
-        ammunitionText.text = player.ammunition.ToString(); // Displays the ammunition
+        
 
 
         alive.text = SpawnControl.currentAmount.ToString(); //Displays the amount of enemies alive
