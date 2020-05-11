@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5272083117449022440}
   - component: {fileID: 4711855059294400453}
   - component: {fileID: 5198379226606768431}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ArrowPickup
   m_TagString: aPickup
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 7029193244747198655}
   - component: {fileID: 23315965060777113}
   - component: {fileID: 2572561259758891156}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}

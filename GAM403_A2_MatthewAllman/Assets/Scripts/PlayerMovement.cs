@@ -272,49 +272,51 @@ public class PlayerMovement : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit, weaponRange)) // Stores any data within hit as the ray shoots forward in the direction the player is moving.
                 {
+
                     marker.transform.position = hit.point; //Uses a marker on screen to see where the raycast is hitting
                     if (hit.collider.CompareTag("Enemy")) // If the raycast hits an object tagged as Enemy
                     {
-                        Enemy enemyHealth = GameObject.Find("Enemy").GetComponent<Enemy>(); // Access the enemy's script to change their health
-                        enemyHealth.eHealth = enemyHealth.eHealth - rangedAttackDmg; //Deals Damage
-                        enemyHealth.hit = true; //Creates Rebound
+                        Enemy e = hit.collider.GetComponent<Enemy>(); // Access the enemy's script to change their health
+                        e.eHealth = e.eHealth - rangedAttackDmg; //Deals Damage
+                        e.hit = true; //Creates Rebound
                         ammunition--; // uses one arrow from ammunition
-                        print("Arrow fired at " + hit.collider.name);
+                        
                     }
                     else if (hit.collider.CompareTag("Boss"))
                     {
-                        Boss bossHealth = GameObject.Find("Boss").GetComponent<Boss>();  //Access the boss' script to change its health
-                        bossHealth.eHealth = bossHealth.eHealth - rangedAttackDmg;
-                        bossHealth.hit = true;
+                        Boss b = hit.collider.GetComponent<Boss>();  //Access the boss' script to change its health
+                        b.eHealth = b.eHealth - rangedAttackDmg;
+                        b.hit = true;
                         ammunition--;
                     }
                 }
             }
 
-            if (Input.GetMouseButtonDown(1) && Time.time > nextFire) //Charge Range Attack (Same as above)
+            if (Input.GetMouseButtonDown(0) && Time.time > nextFire) //when the mouse button is pressed and the time is greater than the time from nextFire variable
             {
-                nextFire = Time.time + fireRate;
+                nextFire = Time.time + fireRate; //Sets the delay for the next attack
 
-                Ray ray = new Ray(transform.position, transform.forward);
-                RaycastHit hit;
+                Ray ray = new Ray(transform.position, transform.forward); // The origin of the raycast is set from the player
+                RaycastHit hit; //Stores the info as hit
                 animator.SetTrigger("Fire");
 
-                if (Physics.Raycast(ray, out hit, weaponRange))
+                if (Physics.Raycast(ray, out hit, weaponRange)) // Stores any data within hit as the ray shoots forward in the direction the player is moving.
                 {
-                    marker.transform.position = hit.point;
-                    if (hit.collider.CompareTag("Enemy"))
+
+                    marker.transform.position = hit.point; //Uses a marker on screen to see where the raycast is hitting
+                    if (hit.collider.CompareTag("Enemy")) // If the raycast hits an object tagged as Enemy
                     {
-                        Enemy enemyHealth = GameObject.Find("Enemy").GetComponent<Enemy>();
-                        enemyHealth.eHealth = enemyHealth.eHealth - rangedChargeDmg;
-                        enemyHealth.hit = true;
-                        ammunition--;
-                        print("Arrow fired at " + hit.collider.name);
+                        Enemy e = hit.collider.GetComponent<Enemy>(); // Access the enemy's script to change their health
+                        e.eHealth = e.eHealth - rangedChargeDmg; //Deals Damage
+                        e.hit = true; //Creates Rebound
+                        ammunition--; // uses one arrow from ammunition
+                        
                     }
                     else if (hit.collider.CompareTag("Boss"))
                     {
-                        Boss bossHealth = GameObject.Find("Boss").GetComponent<Boss>();
-                        bossHealth.eHealth = bossHealth.eHealth - rangedChargeDmg;
-                        bossHealth.hit = true;
+                        Boss b = hit.collider.GetComponent<Boss>();  //Access the boss' script to change its health
+                        b.eHealth = b.eHealth - rangedChargeDmg;
+                        b.hit = true;
                         ammunition--;
                     }
                 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 458571118698568068}
   - component: {fileID: 8328847568241816542}
   - component: {fileID: 4602616647348033161}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: HealthPotion
   m_TagString: hPickup
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 7201751830448968378}
   - component: {fileID: 2007794722363592812}
   - component: {fileID: 7343113220467646293}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}

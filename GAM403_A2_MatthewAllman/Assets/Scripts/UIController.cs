@@ -25,8 +25,12 @@ public class UIController : MonoBehaviour
         startTime = Time.time;
         hideMenu();
         Time.timeScale = 0f;
-        
-        
+        enemyMenu.SetActive(false);
+        pauseMenuUI.SetActive(false);
+        loseMenu.SetActive(false);
+        winMenu.SetActive(false);
+
+
     }
 
 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1029605689520194211}
   - component: {fileID: 8156641278977415323}
   - component: {fileID: 6207845321130725122}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SpeedPotion
   m_TagString: sPickup
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 7207566627802316255}
   - component: {fileID: 1637147825607665304}
   - component: {fileID: 2966044587452555817}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
